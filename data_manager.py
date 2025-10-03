@@ -28,7 +28,7 @@ class DataManager:
     def get_movies(self,user_id:int) -> list[Movie]:
         """Return all movies belonging to a specific user"""
         try:
-            return Movie.query.filter(user_id = user_id).all()
+            return Movie.query.filter(Movie.user_id == user_id).all()
         except SQLAlchemyError as e :
             print(f"Error fetching movies for user {user_id} : {e}")
             return []
@@ -74,14 +74,15 @@ class DataManager:
         try:
             movie = Movie.query.filter_by(id=movie_id, user_id=user_id).first()
             if movie:
-                db.session.delete()
+                db.session.delete(movie)
                 db.session.commit()
                 return  True
             else:
                 print(f"Movie with id {movie_id} not found.")
                 return False
         except SQLAlchemyError as e :
-            print(f"Error deleting movie {e}")
+            db.session.rollback()
+            print(f"Error deleting movie {movie_id}: {e}")
             return False
 
 
