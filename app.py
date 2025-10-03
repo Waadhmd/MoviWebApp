@@ -67,6 +67,11 @@ def delete_movie(user_id, movie_id):
     data_manager.delete_movie(movie_id, user_id)
     return redirect(url_for('get_movies', user_id=user_id))
 
+# Handle 404 errors
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 
 
 if __name__ == '__main__':
