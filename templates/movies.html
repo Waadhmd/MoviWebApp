@@ -3,48 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>My Movies</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<a href="{{ url_for('index') }}">Back to users</a>
-<h3>Movies for {{ user.name }}</h3>
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('index') }}" class="btn btn-secondary mb-3">Back to users</a>
+<h3 class="mb-4">Movies for {{ user.name }}</h3>
 
 {% if movies %}
-    <ul>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for movie in movies %}
-        <li class="movie_card">
-            <img src="{{ movie.poster_url }}" alt="Poster of {{ movie.name }}" width="200" height="300"/>
-            <h4>{{ movie.name }}</h4>
-            <p>Year: {{ movie.year }}</p>
-            <p>Director: {{ movie.director }}</p>
+        <div class="col">
+            <div class="card movie-card h-100 shadow-lg">
+                <div class="poster-wrapper">
+                    <img src="{{ movie.poster_url }}" class="card-img-top poster" alt="Poster of {{ movie.name }}" width="200" height="300"/>
+                </div>
 
-            <div>
+                <div class="card-body text-center">
+                     <h4 class="card-title">{{ movie.name }}</h4>
+                     <p class="card-text">Year: {{ movie.year }}</p>
+                    <p class="card-text">Director: {{ movie.director }}</p>
+
+                </div>
+            <div class="card-footer d-flex justify-content-between mb-4">
                 <!-- Update Movie -->
-                <form action="{{ url_for('update_movie', user_id=user.id, movie_id=movie.id) }}" method="post">
-                    <input type="text" name="new_title" placeholder="New title" required>
-                    <button type="submit">Update Movie</button>
+                <form action="{{ url_for('update_movie', user_id=user.id, movie_id=movie.id) }}" method="post" class="d-flex flex-grow-1 me-2">
+                    <input type="text" name="new_title" placeholder="New title" class="form-control form-control-sm me-2" required>
+                    <button type="submit" class="btn btn-warning btn-sm"> Update</button>
                 </form>
 
                 <!-- Delete Movie -->
                 <form action="{{ url_for('delete_movie',  user_id=user.id, movie_id=movie.id) }}" method="post">
-                    <button type="submit">Delete Movie</button>
+                    <button type="submit" class="btn btn-danger btn-sm"> Delete</button>
                 </form>
             </div>
-        </li>
+            </div>
+        </div>
     {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <p>No movies yet. Add one below!</p>
 {% endif %}
 
 <!-- Add New Movie -->
-<form action="{{ url_for('add_movie', user_id=user.id) }}" method="post">
-    <div>
-        <h3>Add New Movie</h3>
-        <input type="text" name="name" placeholder="Movie title" required>
-        <input type="text" name="year" placeholder="Movie year (optional)">
-    </div>
-    <button type="submit">Add Movie</button>
-</form>
+<div class="add-movie mt-5 p-4">
+    <h4 class="mb-3">🍿 Add New Movie</h4>
+    <form action="{{ url_for('add_movie', user_id=user.id) }}" method="post" class="d-flex gap-2">
+        <input type="text" name="name" class="form-control movie-input" placeholder="🎬 Movie title" required>
+        <input type="text" name="year" class="form-control movie-input" placeholder="📅 Year (optional)">
+        <button type="submit" class="btn btn-danger add-btn">➕ Add Movie</button>
+    </form>
+</div>
 
+
+{% endblock %}
 </body>
 </html>

@@ -1,0 +1,75 @@
+/* Add hover effect for buttons */
+.btn:hover {
+    opacity: 0.85;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+}
+/* Prevent poster stretching */
+..poster {
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.movie-card {
+    background: linear-gradient(145deg, #1c1c1c, #2c2c2c);
+    color: #f8f9fa;
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.movie-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+}
+
+/* Poster wrapper adds a frame effect */
+.poster-wrapper {
+    overflow: hidden;
+    border-bottom: 3px solid #e50914; /* Netflix red accent */
+}
+.poster_wrapper img:hover{
+transition:transform 0.4s ease
+}
+.card-footer{
+background:#111;
+border-top:none;
+}
+.card-footer button{
+border-radius:20px;
+}
+
+.add-movie{
+background:linear-gradient(135deg, #fff, #f8f9fa);
+border:2px dashed #b20710;
+border-radius:12px;
+text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+max-width:700px;
+margin:0 auto;
+}
+
+.add-movie h4{
+font-weight:bold;
+color:#222;
+ font-family: 'Courier New', monospace;/* retro cinema feel */
+}
+.movie-input{
+border-radius:8px;
+padding:10px;
+}
+.add-btn{
+border-radius:8px;
+font-weight:bold;
+transition:all 0.3s ease;
+}
+.add-btn:hover{
+background-color:#d90429;
+transform:scale(1.05);
+}

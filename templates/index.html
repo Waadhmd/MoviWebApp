@@ -7,26 +7,25 @@
 <body>
 {% extends "base.html" %}
 {% block content %}
-<h3>Cinephiles</h3>
-<div>
-    <ul>
+<h3 class="mb-3">Cinephiles</h3>
+<div class="list-group mb-4">
         {% for user in users %}
-    <li class="user-entry">
-        <h3>{{user.name}}</h3>
-        <a href="{{ url_for('get_movies', user_id=user.id) }}" class="btn">Explore Library</a>
-    </li>
+    <div class="list-group-item d-flex justify-content-between align-items-center ">
+        <span>{{user.name}}</span>
+        <a href="{{ url_for('get_movies', user_id=user.id) }}" class="btn btn-primary btn-sm">Explore Library</a>
+    </div>
         {% endfor %}
-    </ul>
 </div>
-<form action="{{ url_for('create_user') }}" method="post">
-  <h3>Add New Cinephile</h3>
-  <div>
+<form action="{{ url_for('create_user') }}" method="post" class="mb-4">
+  <h4>Add New Cinephile</h4>
+  <div class="input-group">
       <input
           type="text"
           name="name"
           placeholder="Enter a cinephile name"
+          class="form-control"
           required>
-      <button type="submit">Add Cinephile</button>
+      <button type="submit" class="btn btn-success">Add Cinephile</button>
   </div>
 </form>
 
