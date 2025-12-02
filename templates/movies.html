@@ -1,62 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My Movies</title>
-     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
 {% extends "base.html" %}
+
 {% block content %}
-<a href="{{ url_for('index') }}" class="btn btn-secondary mb-3">Back to users</a>
-<h3 class="mb-4">Movies for {{ user.name }}</h3>
+<h3 class="mb-4">Welcome, {{ user.username }}!</h3>
 
-{% if movies %}
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for movie in movies %}
-        <div class="col">
-            <div class="card movie-card h-100 shadow-lg">
-                <div class="poster-wrapper">
-                    <img src="{{ movie.poster_url }}" class="card-img-top poster" alt="Poster of {{ movie.name }}" width="200" height="300"/>
-                </div>
-
-                <div class="card-body text-center">
-                     <h4 class="card-title">{{ movie.name }}</h4>
-                     <p class="card-text">Year: {{ movie.year }}</p>
-                    <p class="card-text">Director: {{ movie.director }}</p>
-
-                </div>
-            <div class="card-footer d-flex justify-content-between mb-4">
-                <!-- Update Movie -->
-                <form action="{{ url_for('update_movie', user_id=user.id, movie_id=movie.id) }}" method="post" class="d-flex flex-grow-1 me-2">
-                    <input type="text" name="new_title" placeholder="New title" class="form-control form-control-sm me-2" required>
-                    <button type="submit" class="btn btn-warning btn-sm"> Update</button>
-                </form>
-
-                <!-- Delete Movie -->
-                <form action="{{ url_for('delete_movie',  user_id=user.id, movie_id=movie.id) }}" method="post">
-                    <button type="submit" class="btn btn-danger btn-sm"> Delete</button>
-                </form>
-            </div>
-            </div>
-        </div>
-    {% endfor %}
-    </div>
-{% else %}
-    <p>No movies yet. Add one below!</p>
-{% endif %}
-
-<!-- Add New Movie -->
-<div class="add-movie mt-5 p-4">
-    <h4 class="mb-3">🍿 Add New Movie</h4>
-    <form action="{{ url_for('add_movie', user_id=user.id) }}" method="post" class="d-flex gap-2">
-        <input type="text" name="name" class="form-control movie-input" placeholder="🎬 Movie title" required>
-        <input type="text" name="year" class="form-control movie-input" placeholder="📅 Year (optional)">
-        <button type="submit" class="btn btn-danger add-btn">➕ Add Movie</button>
-    </form>
+<!-- Add New Movie Form -->
+<div class="add-movie p-4 rounded-3 mb-4">
+  <h4 class="mb-3">
+    🍿 Add New Movie <i id="popcorn-icon" class="fa-light fa-popcorn"></i>
+  </h4>
+  <form action="{{ url_for('add_movie') }}" method="post" class="d-flex gap-2">
+    <input
+      type="text"
+      name="name"
+      class="form-control"
+      placeholder="🎬 Movie title"
+      required
+    />
+    <button type="submit" class="btn btn-danger">➕ Add Movie</button>
+  </form>
 </div>
 
-
+{% if movies_with_status %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+  {% for movie, status in movies_with_status %}
+  <div class="col">
+    <div class="card movie-card h-100">
+      <img
+        src="{{ movie.poster_url }}"
+        class="card-img-top"
+        alt="Poster of {{ movie.name }}"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ movie.name }}</h5>
+        <p class="card-text">Year: {{ movie.year }}</p>
+        <p class="card-text">Director: {{ movie.director }}</p>
+        <div class="status-badge" data-movie-id="{{ movie.id }}">
+          {% if status %}
+            <span class="badge 
+              {% if status == 'watched' %}bg-success{% else %}bg-info{% endif %}">
+              {{ status.replace('-', ' ') | title }}
+            </span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-around">
+    <button
+        class="btn btn-sm btn-outline-success status-btn"
+        data-movie-id="{{ movie.id }}"
+        data-status="watched"
+        {% if status == 'watched' %}disabled{% endif %}>
+        Watched
+    </button>
+    <button
+        class="btn btn-sm btn-outline-primary status-btn"
+        data-movie-id="{{ movie.id }}"
+        data-status="want-to-watch"
+        {% if status == 'want-to-watch' %}disabled{% endif %}>
+        Want to Watch
+    </button>
+</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p>No movies in the library yet. Add one above!</p>
+{% endif %}
 {% endblock %}
-</body>
-</html>
