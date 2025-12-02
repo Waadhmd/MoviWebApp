@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block content %}
+<div class="container-fluid mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>All Movies</h1>
+    <div class="dropdown">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="sortDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <i class="fas fa-sort"></i> Sort by
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+        <li>
+          <a class="dropdown-item" href="{{ url_for('dashboard', sort_by='rating') }}"
+            >Rating</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" href="{{ url_for('dashboard', sort_by='year') }}"
+            >Year</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    {% for movie in movies %}
+    <div class="col-md-2 mb-4">
+      <div class="card h-100">
+        <img
+          src="{{ movie.poster_url }}"
+          class="card-img-top"
+          alt="{{ movie.name }}"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ movie.name }}</h5>
+          <p class="card-text">Director: {{ movie.director }}</p>
+          <p class="card-text">Year: {{ movie.year }}</p>
+          <p class="card-text">Rating: {{ movie.rating if movie.rating else 'N/A' }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

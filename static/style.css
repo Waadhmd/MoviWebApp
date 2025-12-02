@@ -1,75 +1,319 @@
-/* Add hover effect for buttons */
-.btn:hover {
-    opacity: 0.85;
+:root {
+  --primary-bg: #09090c; /* Deep Black/Dark Gray */
+  --card-bg: #1a1a1d; /* Slightly Lighter Card Background */
+  --accent-color: #00e676; /* Neon Teal/Green */
+  --text-color: #e0e0e0; /* Light Gray Text */
+  --muted-color: #757575; /* Muted Text */
+  --border-color: #333333; /* Dark Border */
+  --font-family: "Inter", sans-serif;
+}
+* General Body Styles */ body {
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  min-height: 100vh;
+  /* Ensure no residual padding on body */
+  padding: 0;
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* HERO SECTION - Cinematic Style & Removing the "Black Box" Effect */
+/* -------------------------------------------------------------------------- */
+
+.hero-section {
+  /* Softer radial gradient that blends into the primary background color */
+  background: radial-gradient(
+    circle at center,
+    #181a1f 0%,
+    var(--primary-bg) 95%
+  );
+  color: var(--text-color);
+  padding: 100px 0 120px;
+  position: relative;
+  border-bottom: 2px solid var(--accent-color);
+  box-shadow: 0 5px 20px rgba(0, 230, 118, 0.1);
+
+  /* NEW: Ensure the hero section explicitly spans 100% of the viewport width */
+  width: 100vw;
+  /* NEW: Offset to counteract any potential margin/padding causing horizontal scroll */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-section .display-4 {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #ffffff;
+  /* Hide text initially, the JS will build it */
+  min-height: 6rem;
+}
+
+.hero-section .lead {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  margin-bottom: 20px;
+}
+/* Styles for the static accent color class used on the popcorn icon in HTML */
+.text-accent {
+  color: var(--accent-color) !important;
+}
+
+/* Styles for the dynamically added accent color */
+.text-accent-js {
+  color: var(--accent-color);
+}
+/* Popcorn Icon specific styles to prevent 0x0 size */
+#popcorn-icon {
+  color: var(--accent-color) !important;
+  fill: var(
+    --accent-color
+  ) !important; /* NEW: Added fill property override for SVG icons */
+  font-size: 3rem; /* Reinforce fa-3x size */
+  display: inline-block; /* CRITICAL: ensures it takes up space */
+  /* Add a specific width/height just in case */
+  width: 3rem;
+  height: 3rem;
+}
+/* Popcorn Icon Animation */
+.hidden-icon {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  display: block; /* Ensure the icon takes up space even when hidden */
+  margin-bottom: 10px;
+}
+
+.visible-icon {
+  opacity: 1;
+  transform: scale(1);
+  margin-bottom: 10px;
+}
+
+/* Subtle separator for extra style */
+.hero-divider {
+  width: 60px;
+  height: 4px;
+  background-color: var(--accent-color);
+  margin: 20px auto 0;
+  border-radius: 2px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* CARD & FORM STYLES */
+/* -------------------------------------------------------------------------- */
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 12px;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    transition: 0.3s;
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 230, 118, 0.15);
 }
 
-input:focus {
+.card h3 {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Custom styling for inputs and selects */
+.form-control-custom,
+.form-select {
+  background-color: var(--primary-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  transition: border-color 0.3s;
+}
+
+.form-control-custom:focus,
+.form-select:focus {
+  background-color: var(--primary-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 0.25rem rgba(0, 230, 118, 0.25) !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* BUTTONS - Accent Color Focus */
+/* -------------------------------------------------------------------------- */
+
+/* Primary Go to Library Button */
+.btn-cta {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--primary-bg); /* Dark text on bright button */
+  font-weight: 700;
+  border-radius: 8px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-cta:hover {
+  background-color: #00c853; /* Slightly darker green on hover */
+  border-color: #00c853;
+  transform: translateY(-2px);
+  color: var(--primary-bg);
+}
+
+/* Add Cinephile Button */
+.btn-success-custom {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--primary-bg);
+  font-weight: 600;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.btn-success-custom:hover {
+  background-color: #00c853;
+  border-color: #00c853;
+  color: var(--primary-bg);
+}
+
+/* Delete Button (Danger) */
+.btn-danger-custom {
+  background-color: transparent;
+  border: 1px solid #ff5252; /* Red accent */
+  color: #ff5252;
+  margin-left: 5px;
+  border-radius: 8px;
+}
+
+.btn-danger-custom:hover {
+  background-color: #ff5252;
+  color: #ffffff;
+}
+
+/* -------------------------------------------------------------------------- */
+/* MODAL Styles */
+/* -------------------------------------------------------------------------- */
+
+.modal-content-custom {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid var(--accent-color);
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgba(0, 230, 118, 0.1);
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--border-color);
+}
+
+.btn-close {
+  filter: invert(1); /* Makes the close button visible on dark background */
+}
+/* General Body Styles 
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Helvetica Neue', sans-serif;
+}*/
+
+/* Hero Section */
+/*
+.hero-section {
+    background: url('https://www.themoviedb.org/t/p/original/6X2L8iTsvVdygCSdGmfby3s5a3o.jpg') no-repeat center center/cover;
+    color: #ffffff;
+    padding: 100px 0;
+    position: relative;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+*/
+/* Card Styles */
+/*
+.card {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    color: #ffffff;
+}
+
+.card h3 {
+    color: #ffffff;
+}
+
+.form-select {
+    background-color: #2c2c2c;
+    color: #ffffff;
+    border: 1px solid #444;
+}
+
+.form-control {
+    background-color: #2c2c2c;
+    color: #ffffff;
+    border: 1px solid #444;
+}
+
+.form-control:focus {
+    background-color: #2c2c2c;
+    color: #ffffff;
     border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+    box-shadow: none;
 }
-/* Prevent poster stretching */
-..poster {
-    height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-.movie-card {
-    background: linear-gradient(145deg, #1c1c1c, #2c2c2c);
-    color: #f8f9fa;
-    border: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.movie-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+*/
+/* Button Styles */
+/*
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
 }
 
-/* Poster wrapper adds a frame effect */
-.poster-wrapper {
-    overflow: hidden;
-    border-bottom: 3px solid #e50914; /* Netflix red accent */
-}
-.poster_wrapper img:hover{
-transition:transform 0.4s ease
-}
-.card-footer{
-background:#111;
-border-top:none;
-}
-.card-footer button{
-border-radius:20px;
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
 }
 
-.add-movie{
-background:linear-gradient(135deg, #fff, #f8f9fa);
-border:2px dashed #b20710;
-border-radius:12px;
-text-align:center;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-max-width:700px;
-margin:0 auto;
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
 }
 
-.add-movie h4{
-font-weight:bold;
-color:#222;
- font-family: 'Courier New', monospace;/* retro cinema feel */
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
 }
-.movie-input{
-border-radius:8px;
-padding:10px;
+*/
+/* Modal Styles */
+/*
+.modal-content {
+    background-color: #1e1e1e;
+    color: #ffffff;
 }
-.add-btn{
-border-radius:8px;
-font-weight:bold;
-transition:all 0.3s ease;
+
+.modal-header, .modal-footer {
+    border-bottom: 1px solid #333;
+    border-top: 1px solid #333;
 }
-.add-btn:hover{
-background-color:#d90429;
-transform:scale(1.05);
+
+.btn-close {
+    filter: invert(1);
 }
+*/
