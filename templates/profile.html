@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-4 shadow-lg">
+                <h3 class="text-center mb-4">{{ user.username }}'s Profile</h3>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <h4>Total Movies Watched</h4>
+                        <p class="display-4">{{ total_watched }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Daily Streak</h4>
+                        <p class="display-4">{{ daily_streak }} 🔥</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Weekly Streak</h4>
+                        <p class="display-4">{{ weekly_streak }} 🏆</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Progress Bar -->
+                <h4 class="mt-4">Progress to 100 Movies</h4>
+                <div class="progress" style="height: 25px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ (total_watched / 100) * 100 }}%;" aria-valuenow="{{ total_watched }}" aria-valuemin="0" aria-valuemax="100">{{ total_watched }}</div>
+                </div>
+
+                <!-- Milestone Achievements -->
+                <div class="milestones mt-4">
+                    <h4 class="mb-3">Achievements</h4>
+                    {% set milestones = {1: "First Movie!", 5: "Movie Novice", 10: "Cinephile in the Making", 25: "Movie Buff", 50: "Series Specialist", 100: "Cinema Master"} %}
+                    {% for count, name in milestones.items() %}
+                        {% if total_watched >= count %}
+                        <span class="badge bg-warning text-dark fs-6 mb-2">🏆 {{ name }}</span>
+                        {% else %}
+                        <span class="badge bg-light text-muted fs-6 mb-2">🔒 {{ name }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <hr>
+                <h4 class="mt-4">Watch History</h4>
+                <ul class="list-group">
+                    {% for status in user.movie_statuses if status.status == 'watched' %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ status.movie.name }}
+                        <span class="badge bg-primary rounded-pill">{{ status.watched_at.strftime('%Y-%m-%d') }}</span>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item">No movies watched yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
